@@ -14,6 +14,9 @@ class Move(Enum):
 class Modifier(Enum):
     Normal, Twice, Prime = range(3)
 
+# Had to rotate a 2D array 90 degrees. Rather dirty but it works
+# Also had issues deepcopying the old self.state list so I did it manually
+# http://stackoverflow.com/questions/16684856/rotating-a-2d-pixel-array-by-90-degrees
 # Assumes array is square and not rectangular
 def rot2DArray(old_array):
     magnitude = len(old_array[0])
