@@ -7,6 +7,7 @@ from Cube import *
 #   Basically it will just be an operational state to compare optimization results against
 class Cube_Standard(Cube):
     state = []      # Structure, 6 lists per face, in each face list there are magnitude amount of rows
+    # I tried making this an Enum but it somehow took twice as long to operate so here we are...
     faces = ["U", "R", "F", "L", "B", "D"]  # Allows us to change the structure format easily
 
     def __init__(self, magnitude=3):
