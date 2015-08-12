@@ -197,6 +197,9 @@ class Cube_KociembaCoordinateLevel:
         pass
 
 cube = Cube_Standard(3)
+cube2 = Cube_Standard(3)
+cube2.apply_move(Move.U, Modifier.Normal)
+print(cube.equals(cube2))
 alg = "F D' B R' U D' F' L D B U2 R2 F2 D' F2 L2 B2 D' F2 D"
 cube.apply_alg(alg)
 cube.log()
