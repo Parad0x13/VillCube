@@ -6,26 +6,29 @@ class Cube_KociembaCoordinateLevel_Array(Cube):
     def __init__(self, magnitude=3):
         assert(magnitude == 3)
         super().__init__(magnitude)
-        
+
     def reset():
-        self.edges_permutation = [Edge.UF, Edge.UR, Edge.UB, Edge.UL,
-                                  Edge.FR, Edge.BR, Edge.BL, Edge.FL,
-                                  Edge.DF, Edge.DR, Edge.DB, Edge.DL]
+        self.edges_permutation = range(12)
         self.edges_orientation = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        self.corners_permutation = [Corner.UFR, Corner.UBR, Corner.UBL,
-                                    Corner.UFL, Corner.DFR, Corner.DBR,
-                                    Corner.DBL, Corner.DFL]
+        self.corners_permutation = range(8)
         self.corners_orientation = [0, 0, 0, 0, 0, 0, 0, 0]
-        
+
     def apply_move(self, move, modifer):
         assert(move in Move)
         assert(modifer in Modifer)
         if(move == Move.U and modifer == Modifer.Normal):
-            edge_permutation = [1, 2, 3, 0, 4, 5, 6, 7, 8, 9, 10, 11]
-            self.edges_permutation = map(self.edges_permutation.__getitem__, 
-                                         edge_permutation)
-            corner_permutation = []
-        
+#            edge_permutation = [1, 2, 3, 0, 4, 5, 6, 7, 8, 9, 10, 11]
+#            self.edges_permutation = map(self.edges_permutation.__getitem__, 
+#                                         edge_permutation)
+            temp_edge = self.edges_permutation[0]
+            self.edges_permutation[0] = self.edges_permutation[1]
+            self.edges_permutation[1] = self.edges_permutation[2]
+            self.edges_permutation[2] = self.edges_permutation[3]
+            self.edges_permutation[3] = temp
+            corner_permutation = [1, 2, 3, 0, 4, 5, 6, 7]
+            self.corners_permutation = map(self.corners_permutation.__getitem__, 
+                                         corner_permutation)
+
     def apply_alg(self, alg):
         moves = alg.split(" ")
         for move in moves:
