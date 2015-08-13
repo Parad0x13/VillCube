@@ -28,7 +28,6 @@ class Cube_Standard(Cube):
         return self.state == other_cube.state
 
     def apply_axisRotation(self, axis, modifier):
-        assert(axis in Axis)
         assert(modifier in Modifier)
         if(modifier == Modifier.Twice):
             for d in range(2):
@@ -40,7 +39,7 @@ class Cube_Standard(Cube):
             return
         assert(modifier == Modifier.Normal)
         #Need to 2D rotate Up and Down faces, and then swap/rotate respective inline faces
-        if(axis == Axis.x):
+        if(axis == "x"):
             self.state[self.faces.index("R")] = rot2DArray(self.state[self.faces.index("R")])
             for rot in range(3):
                 self.state[self.faces.index("L")] = rot2DArray(self.state[self.faces.index("L")])
@@ -53,7 +52,7 @@ class Cube_Standard(Cube):
             self.state[self.faces.index("B")] = up
             for d in range(2):
                 self.state[self.faces.index("B")] = rot2DArray(self.state[self.faces.index("B")])
-        elif(axis == Axis.y):
+        elif(axis == "y"):
             self.state[self.faces.index("U")] = rot2DArray(self.state[self.faces.index("U")])
             for rot in range(3):
                 self.state[self.faces.index("D")] = rot2DArray(self.state[self.faces.index("D")])
@@ -62,7 +61,7 @@ class Cube_Standard(Cube):
             self.state[self.faces.index("R")] = self.state[self.faces.index("B")]
             self.state[self.faces.index("B")] = self.state[self.faces.index("L")]
             self.state[self.faces.index("L")] = front
-        elif(axis == Axis.z):
+        elif(axis == "z"):
             self.state[self.faces.index("F")] = rot2DArray(self.state[self.faces.index("F")])
             for rot in range(3):
                 self.state[self.faces.index("B")] = rot2DArray(self.state[self.faces.index("B")])
@@ -76,29 +75,7 @@ class Cube_Standard(Cube):
             self.state[self.faces.index("R")] = up
             self.state[self.faces.index("R")] = rot2DArray(self.state[self.faces.index("R")])
 
-    def apply_move_string(self, moveString):
-        move = Move.U
-        modifier = Modifier.Normal
-        if("'" in moveString):
-            modifier = Modifier.Prime
-        elif("2" in moveString):
-            modifier = Modifier.Twice
-        if("U" in moveString):
-            move = Move.U
-        elif("D" in moveString):
-            move = Move.D
-        elif("L" in moveString):
-            move = Move.L
-        elif("R" in moveString):
-            move = Move.R
-        elif("F" in moveString):
-            move = Move.F
-        elif("B" in moveString):
-            move = Move.B
-        self.apply_move(move, modifier)
-
     def apply_move(self, move, modifier):
-        assert(move in Move)
         assert(modifier in Modifier)
         if(modifier == Modifier.Twice):
             for d in range(2):
@@ -108,7 +85,7 @@ class Cube_Standard(Cube):
             for d in range(3):
                 self.apply_move(move, Modifier.Normal)
             return
-        if(move == Move.U):
+        if(move == "U"):
             self.state[self.faces.index("U")] = rot2DArray(self.state[self.faces.index("U")])
             frontTopRow = self.state[self.faces.index("F")][0]
             leftTopRow = self.state[self.faces.index("L")][0]
@@ -118,31 +95,49 @@ class Cube_Standard(Cube):
             self.state[self.faces.index("B")][0] = leftTopRow
             self.state[self.faces.index("R")][0] = backTopRow
             self.state[self.faces.index("F")][0] = rightTopRow
-        elif(move == Move.D):
-            self.apply_axisRotation(Axis.x, Modifier.Twice)
-            self.apply_move(Move.U, Modifier.Normal)
-            self.apply_axisRotation(Axis.x, Modifier.Twice)
-        elif(move == Move.L):
-            self.apply_axisRotation(Axis.z, Modifier.Normal)
-            self.apply_move(Move.U, Modifier.Normal)
-            self.apply_axisRotation(Axis.z, Modifier.Prime)
-        elif(move == Move.R):
-            self.apply_axisRotation(Axis.z, Modifier.Prime)
-            self.apply_move(Move.U, Modifier.Normal)
-            self.apply_axisRotation(Axis.z, Modifier.Normal)
-        elif(move == Move.F):
-            self.apply_axisRotation(Axis.x, Modifier.Normal)
-            self.apply_move(Move.U, Modifier.Normal)
-            self.apply_axisRotation(Axis.x, Modifier.Prime)
-        elif(move == Move.B):
-            self.apply_axisRotation(Axis.x, Modifier.Prime)
-            self.apply_move(Move.U, Modifier.Normal)
-            self.apply_axisRotation(Axis.x, Modifier.Normal)
+        elif(move == "D"):
+            self.apply_axisRotation("x", Modifier.Twice)
+            self.apply_move("U", Modifier.Normal)
+            self.apply_axisRotation("x", Modifier.Twice)
+        elif(move == "L"):
+            self.apply_axisRotation("z", Modifier.Normal)
+            self.apply_move("U", Modifier.Normal)
+            self.apply_axisRotation("z", Modifier.Prime)
+        elif(move == "R"):
+            self.apply_axisRotation("z", Modifier.Prime)
+            self.apply_move("U", Modifier.Normal)
+            self.apply_axisRotation("z", Modifier.Normal)
+        elif(move == "F"):
+            self.apply_axisRotation("x", Modifier.Normal)
+            self.apply_move("U", Modifier.Normal)
+            self.apply_axisRotation("x", Modifier.Prime)
+        elif(move == "B"):
+            self.apply_axisRotation("x", Modifier.Prime)
+            self.apply_move("U", Modifier.Normal)
+            self.apply_axisRotation("x", Modifier.Normal)
 
     def apply_alg(self, alg):
-        moves = alg.split(" ")
-        for move in moves:
-            self.apply_move_string(move)
+        moveStrings = alg.split(" ")
+        for moveString in moveStrings:
+            move = "U"
+            modifier = Modifier.Normal
+            if("'" in moveString):
+                modifier = Modifier.Prime
+            elif("2" in moveString):
+                modifier = Modifier.Twice
+            if("U" in moveString):
+                move = "U"
+            elif("D" in moveString):
+                move = "D"
+            elif("L" in moveString):
+                move = "L"
+            elif("R" in moveString):
+                move = "R"
+            elif("F" in moveString):
+                move = "F"
+            elif("B" in moveString):
+                move = "B"
+            self.apply_move(move, modifier)
 
     def log(self):
         # Print Up Face
