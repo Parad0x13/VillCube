@@ -17,17 +17,22 @@ class Cube_KociembaCoordinateLevel_Array(Cube):
         assert(move in Move)
         assert(modifer in Modifer)
         if(move == Move.U and modifer == Modifer.Normal):
-#            edge_permutation = [1, 2, 3, 0, 4, 5, 6, 7, 8, 9, 10, 11]
-#            self.edges_permutation = map(self.edges_permutation.__getitem__, 
-#                                         edge_permutation)
+            # Cycles edges in U layer clockwise
+            # The U layer edges, listed clockwise, are 3, 2, 1, 0
             temp_edge = self.edges_permutation[0]
             self.edges_permutation[0] = self.edges_permutation[1]
             self.edges_permutation[1] = self.edges_permutation[2]
             self.edges_permutation[2] = self.edges_permutation[3]
-            self.edges_permutation[3] = temp
-            corner_permutation = [1, 2, 3, 0, 4, 5, 6, 7]
-            self.corners_permutation = map(self.corners_permutation.__getitem__, 
-                                         corner_permutation)
+            self.edges_permutation[3] = temp_edge
+            # Cycles corners in U layer clockwise
+            # The U layer corners, listed clockwise, are 3, 2, 1, 0
+            temp_corner = self.corners_permutation[0]
+            self.corners_permutation[0] = self.corners_permutation[1]
+            self.corners_permutation[1] = self.corners_permutation[2]
+            self.corners_permutation[2] = self.corners_permutation[3]
+            self.corneres_permutation[3] = temp_corner
+        if(move == Move.U and modifer == Modifer.Twice)
+            pass
 
     def apply_alg(self, alg):
         moves = alg.split(" ")
